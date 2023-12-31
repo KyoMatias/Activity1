@@ -55,4 +55,5 @@ public class MovementScript : MonoBehaviour
         GameManager.Instance.GameRestart(true);
         StartCoroutine(GameManager.Instance.DisplayScene());
     }
+    
 }
