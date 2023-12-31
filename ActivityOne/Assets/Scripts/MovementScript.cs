@@ -7,7 +7,9 @@ using UnityEngine;
 public class MovementScript : MonoBehaviour
 {
     public float MoveSpeed = 10f;
-    public int PlayerStealth;
+    public float PlayerStealth;
+
+    private const float depri = 10;
 
 
     private void Start()
@@ -35,9 +37,14 @@ public class MovementScript : MonoBehaviour
         
     }
 
+
+    void Spotted()
+    {
+        PlayerStealth -= depri *Time.deltaTime;
+    }
     void StealthCounter() //Function that checks for player stealth (HARDCODED, FOR REFERENCES)
     {
-        
+
         if (PlayerStealth <= 50) //Setup for engage at 50 PS
         {
             Debug.Log("Warning! Your Stealth is Getting Low, Move away from towers to regenerate"); 
