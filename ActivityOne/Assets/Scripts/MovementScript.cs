@@ -1,20 +1,35 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MovementScript : MonoBehaviour
 {
     public float MoveSpeed = 10f;
-    public float PlayerStealth;
 
+    public float PlayerStealth;
     private const float depri = 10;
 
+    [SerializeField] private GameObject _deathScreen;
+    [SerializeField] private TextMeshProUGUI _healthText;
 
+
+    void Awake()
+    {
+        //GameManager.OnGameStateChange += GameManagerOnOnGameStateChanged; FIX THIS SHIT!!!
+        PlayerStealth = 100; // HARDCODED VARIABLE! USED FOR REFERENCES.
+        _healthText.text = PlayerStealth.ToString();
+    }
+
+    private void GameManagerOnOnGameStateChanged(GameState obj)
+    {
+        throw new System.NotImplementedException();
+    }
     private void Start()
     {
-        PlayerStealth = 100; // HARDCODED VARIABLE! USED FOR REFERENCES.
         Debug.Log("$Player Stealth Value: " + PlayerStealth);
     }
 
@@ -22,7 +37,6 @@ public class MovementScript : MonoBehaviour
     void FixedUpdate()
     { 
         PlayerControls(); // checks for player movement by calling the function in the FixedUpdate.
-        StealthCounter(); // checks for player stealth by its values and how much danger they are in.
     }
 
     void PlayerControls()
@@ -38,9 +52,16 @@ public class MovementScript : MonoBehaviour
     }
 
 
-    void Spotted()
+    public void Spotted()
     {
-        PlayerStealth -= depri *Time.deltaTime;
+
+         _healthText.text = PlayerStealth.ToString("#.00");
+         StealthCounter();
+    }
+
+    void LowerStealth()
+    {
+                PlayerStealth -= depri *Time.deltaTime; //Depriciating health when player is in cone
     }
     void StealthCounter() //Function that checks for player stealth (HARDCODED, FOR REFERENCES)
     {
@@ -51,9 +72,10 @@ public class MovementScript : MonoBehaviour
             //Add Code here for Warning Function [ WarningFunc() ]
         }
         
-        else if (PlayerStealth == 0) //Engage PLayerDeath() Function on zero.
+        else if (PlayerStealth <=0) //Engage PLayerDeath() Function on zero.
         {
-            PlayerDeath(); //PlayerDeath Initialized 
+            _deathScreen.SetActive(true);
+            Debug.Log("PLAYER DEAD!!!");
         }
     }
     

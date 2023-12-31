@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     private bool _isGameOver; //Bool to call when game state is over, initiating a reset.
     private static GameManager _instance; //instance bullshit i need to study more []
 
+    public GameState State;
+
     public static event Action<GameState> OnGameStateChange;
     /* 
     #GameState Event is created to enable the game to know what state it is in. 
@@ -49,6 +51,8 @@ public class GameManager : MonoBehaviour
 
     public void UpdateGameState(GameState newState)
     {
+        State = newState;
+
         switch(newState)
         {
             case GameState.Start:

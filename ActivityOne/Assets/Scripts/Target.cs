@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditor.U2D.Animation;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class Target : MonoBehaviour
 {
-
+    
     public GameObject Player;
     public Transform targetRange;
 
+    MovementScript movescript;
 
     // Update is called once per frame
+
+    void Start()
+    {
+        movescript = GameObject.FindGameObjectWithTag("Player").GetComponent<MovementScript>();
+    }
     void FixedUpdate()
     {
         CalculateRange();
@@ -35,6 +42,7 @@ public class Target : MonoBehaviour
         if(InRange)
         {
             Debug.Log($"YOU ARE SPOTTED!! {referencedotX}");
+            movescript.Spotted();
             
         }
     }
