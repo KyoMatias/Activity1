@@ -1,0 +1,6 @@
+{
+    "workbench.colorCustomizations": {
+        "editorLineNumber.foreground": "#fff127", // Change this color code
+        "editorLineNumber.activeForeground": "#00ffaa" // Change this color code for the active line number
+    }
+    }

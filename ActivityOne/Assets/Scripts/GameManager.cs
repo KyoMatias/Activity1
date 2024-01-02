@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -74,7 +75,7 @@ public class GameManager : MonoBehaviour
 
     private void StartGame()
     {
-        //Start Game Sequence, try to get all pos and states before starting.
+        
     }
     
     public enum GameState {

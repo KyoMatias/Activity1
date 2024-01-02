@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEditor.SceneManagement;
 
 public class MovementScript : MonoBehaviour
 {
@@ -13,8 +15,8 @@ public class MovementScript : MonoBehaviour
     public float PlayerStealth;
     private const float depri = 10;
 
-    [SerializeField] private GameObject _deathScreen;
     [SerializeField] private TextMeshProUGUI _healthText;
+    public SceneManager scene;
 
 
     void Awake()
@@ -24,10 +26,6 @@ public class MovementScript : MonoBehaviour
         _healthText.text = PlayerStealth.ToString();
     }
 
-    private void GameManagerOnOnGameStateChanged(GameState obj)
-    {
-        throw new System.NotImplementedException();
-    }
     private void Start()
     {
         Debug.Log("$Player Stealth Value: " + PlayerStealth);
@@ -54,35 +52,34 @@ public class MovementScript : MonoBehaviour
 
     public void Spotted()
     {
-
+        LowerStealth(true);
          _healthText.text = PlayerStealth.ToString("#.00");
          StealthCounter();
     }
 
-    void LowerStealth()
+    void LowerStealth(bool status)
     {
+        if(status)
+        {
                 PlayerStealth -= depri *Time.deltaTime; //Depriciating health when player is in cone
+        }
+            status = false;
     }
     void StealthCounter() //Function that checks for player stealth (HARDCODED, FOR REFERENCES)
     {
 
-        if (PlayerStealth <= 50) //Setup for engage at 50 PS
+        if (PlayerStealth < 0) //Setup for engage at 50 PS
         {
-            Debug.Log("Warning! Your Stealth is Getting Low, Move away from towers to regenerate"); 
-            //Add Code here for Warning Function [ WarningFunc() ]
-        }
-        
-        else if (PlayerStealth <=0) //Engage PLayerDeath() Function on zero.
-        {
-            _deathScreen.SetActive(true);
-            Debug.Log("PLAYER DEAD!!!");
+            PlayerDeath();
+           SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 0);;// Loads the death screen UI 
         }
     }
     
     private void PlayerDeath()
     {
-        GameManager.Instance.GameRestart(true);
-        StartCoroutine(GameManager.Instance.DisplayScene());
+        LowerStealth(false);
+        //GameManager.Instance.GameRestart(true);
+       //StartCoroutine(GameManager.Instance.DisplayScene());
     }
     
 }
